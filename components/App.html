@@ -1,0 +1,26 @@
+<div class="pa4">
+    <div class="overflow-auto">
+            <Grid bind:columns bind:rows/>
+    </div>
+</div>
+
+<script>
+    import Grid from './Grid.html'
+
+    export default {
+        components: { Grid },
+        data() {
+            return {
+                columns: ['Name', 'Username', 'Email', 'ID'],
+                rows: [
+                    {
+                        name: "Hassan Johnson",
+                        nick: "hassan",
+                        email: "hassan@companywithalongdomain.co",
+                        id: "14419232532474"
+                    }
+                ]
+            }
+        }
+    }
+</script>

@@ -1,0 +1,87 @@
+<table class="f6 w-100 mw8 center" cellspacing="0">
+    {{#if columns}}
+    <thead>
+        <tr>
+            {{#each columns as column}}
+            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">{{column}}</th>
+            {{/each}}
+            <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">#</th>
+        </tr>
+    </thead>
+    {{/if}}
+    <tbody class="lh-copy">
+        {{#if rows}} {{#each rows as row, i}}
+        <tr>
+            {{#if row.edit}}
+            <td class="pv3 pr3 bb b--black-20"><input bind:value="row.name"></td>
+            <td class="pv3 pr3 bb b--black-20"><input bind:value="row.nick"></td>
+            <td class="pv3 pr3 bb b--black-20"><input bind:value="row.email"></td>
+            <td class="pv3 pr3 bb b--black-20"><input bind:value="row.id"></td>
+            <td class="pv3 pr3 bb b--black-20">
+                <button on:click="cancel(i)">Cancel</button>
+                <button on:click="save(i)">Save</button>
+            </td>
+            {{else}}
+            <td class="pv3 pr3 bb b--black-20">{{row.name}}</td>
+            <td class="pv3 pr3 bb b--black-20">@{{row.nick}}</td>
+            <td class="pv3 pr3 bb b--black-20">{{row.email}}</td>
+            <td class="pv3 pr3 bb b--black-20">{{row.id}}</td>
+            <td class="pv3 pr3 bb b--black-20">
+                <button on:click="edit(i)">Edit</button>
+                <button on:click="splice('rows', i, 1)">Remove</button>
+            </td>
+            {{/if}}
+        </tr>
+        {{/each}} {{else}}
+        <tr>
+            <td colspan="10" class="pv3 pr3 bb b--black-20">No record available</td>
+        </tr>
+        {{/if}}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="10">
+                <button class="f6 link dim br1 ph3 pv2 mb2 dib white bg-mid-gray" on:click="push('rows', {edit: true})">Add</button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+    import { push, splice } from 'svelte-extras'
+
+    export default {
+        data() {
+            return {
+                edit: {}
+            }
+        },
+        methods: { 
+            push, 
+            splice,
+            cancel(i) {
+                const {rows, edit} = this.get()
+                if (edit[i]) {
+                    rows[i] = JSON.parse(JSON.stringify(edit[i]))
+                    delete edit[i]
+                } else {
+                    rows.splice(i, 1)
+                }
+                this.set({rows, edit})
+            },
+            edit(i) {
+                const { rows, edit } = this.get()
+                edit[i] = JSON.parse(JSON.stringify(rows[i]))
+                rows[i].edit = true
+                this.set({rows, edit})
+            },
+            save (i) {
+                const {rows, edit} = this.get()
+                delete rows[i].edit
+                delete edit[i]
+                this.set({rows, edit})
+            }
+        },
+    }
+
+</script>
