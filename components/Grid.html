@@ -56,30 +56,30 @@
                 edit: {}
             }
         },
-        methods: { 
-            push, 
+        methods: {
+            push,
             splice,
             cancel(i) {
-                const {rows, edit} = this.get()
+                const { rows, edit } = this.get()
                 if (edit[i]) {
                     rows[i] = JSON.parse(JSON.stringify(edit[i]))
                     delete edit[i]
                 } else {
                     rows.splice(i, 1)
                 }
-                this.set({rows, edit})
+                this.set({ rows, edit })
             },
             edit(i) {
                 const { rows, edit } = this.get()
                 edit[i] = JSON.parse(JSON.stringify(rows[i]))
                 rows[i].edit = true
-                this.set({rows, edit})
+                this.set({ rows, edit })
             },
-            save (i) {
-                const {rows, edit} = this.get()
+            save(i) {
+                const { rows, edit } = this.get()
                 delete rows[i].edit
                 delete edit[i]
-                this.set({rows, edit})
+                this.set({ rows, edit })
             }
         },
     }
